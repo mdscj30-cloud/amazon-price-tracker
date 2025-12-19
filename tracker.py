@@ -101,22 +101,46 @@ def get_status(new_entry, df_old):
     return "New Record"
 
 if __name__ == "__main__":
-    df_old = pd.read_excel(FILENAME) if os.path.exists(FILENAME) else None
-    
-    # Shuffle URLs for every run
+
+    run_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    # Read existing Excel (do not change file name)
+    if os.path.exists(FILENAME):
+        df = pd.read_excel(FILENAME)
+    else:
+        df = pd.DataFrame(columns=["SKU Name"])
+
+    # Ensure SKU Name column exists
+    if "SKU Name" not in df.columns:
+        df.insert(0, "SKU Name", "")
+
+    # 🔥 INSERT LATEST PRICE COLUMN FIRST (Column B)
+    df.insert(1, run_time, "")
+
+    # Shuffle URLs (existing behavior kept)
     random.shuffle(URLS)
-    batch = []
 
     for i, url in enumerate(URLS):
-        print(f"[{i+1}/25] Checking product...")
+        print(f"[{i+1}/{len(URLS)}] Checking product...")
         data = get_amazon_data(url)
-        if data:
-            data["Price Change"] = get_status(data, df_old)
-            batch.append(data)
 
-    if batch:
-        df_new = pd.DataFrame(batch)
-        # Combine: Latest prices at the TOP
-        df_final = pd.concat([df_new, df_old], ignore_index=True) if df_old is not None else df_new
-        df_final.to_excel(FILENAME, index=False)
-        print("Scraping complete. Newest prices saved at the top.")
+        if not data:
+            continue
+
+        sku = data["Product"]
+        price = data["Price"]
+
+        # If SKU already exists → update price
+        if sku in df["SKU Name"].values:
+            df.loc[df["SKU Name"] == sku, run_time] = price
+        else:
+            # New SKU → add row (do not disturb existing columns)
+            new_row = {col: "" for col in df.columns}
+            new_row["SKU Name"] = sku
+            new_row[run_time] = price
+            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+
+    # Save back to same Excel
+    df.to_excel(FILENAME, index=False)
+
+    print("✅ Latest price inserted first. Older prices shifted right.")
