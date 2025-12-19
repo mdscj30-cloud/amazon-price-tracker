@@ -3,10 +3,10 @@ name: Amazon Price Tracker
 on:
   schedule:
     - cron: '0 */4 * * *'  # Runs every 4 hours
-  workflow_dispatch:      # Allows manual trigger
+  workflow_dispatch:
 
 permissions:
-  contents: write         # Crucial for the bot to save files
+  contents: write
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Downloads full history required for rebase
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,24 +25,17 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 pandas openpyxl
 
-      - name: Run tracker
-        run: python tracker.py
-
-      - name: Sync and Push Changes
+      - name: Sync Repository
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
-          
-          # 1. Pull latest changes and rebase your new data on top
           git pull --rebase origin main
-          
-          # 2. Stage the Excel file
+
+      - name: Run tracker
+        run: python tracker.py
+
+      - name: Commit and Push Changes
+        run: |
           git add price_tracker_final.xlsx
-          
-          # 3. Only commit and push if there is actually new data
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Price Update: $(date)"
-            git push origin main
-          fi
+          git commit -m "Price Update: $(date)" || echo "No changes"
+          git push origin main
