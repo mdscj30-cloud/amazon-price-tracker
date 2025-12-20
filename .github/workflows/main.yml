@@ -33,11 +33,22 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           
+          # -------------------------------
+          # ADDITION (DO NOT REMOVE)
+          # Stash UNTRACKED files (Excel)
+          git stash -u || echo "Nothing to stash (including untracked)"
+          # -------------------------------
+          
           # 1. Hide the newly generated Excel file so the folder is "clean"
           git stash
           
           # 2. Sync with GitHub (Pulls latest edits you made on the website)
           git pull --rebase origin main
+          
+          # -------------------------------
+          # ADDITION (SAFETY NET)
+          git stash pop || echo "No changes to apply"
+          # -------------------------------
           
           # 3. Bring the Excel file back from stash
           git stash pop || echo "No changes to apply"
