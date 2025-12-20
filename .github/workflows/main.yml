@@ -2,11 +2,11 @@ name: Amazon Price Tracker
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # Runs every 4 hours
-  workflow_dispatch:      # Allows manual trigger
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: write         # Gives the bot permission to save files
+  contents: write
 
 jobs:
   build:
@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Required for successful rebase
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -27,33 +25,18 @@ jobs:
 
       - name: Run tracker
         run: python tracker.py
+        # This step creates 'price_tracker_final.xlsx' for the first time
 
-      - name: Sync and Push Changes
+      - name: Commit and Push New File
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           
-          # --------------------------------------------------
-          # ADDITION (CRITICAL – DO NOT REMOVE)
-          # Stash UNTRACKED files like price_tracker_final.xlsx
-          git stash -u || echo "Nothing to stash (including untracked)"
-          # --------------------------------------------------
-          
-          # 1. Hide the newly generated Excel file so the folder is "clean"
-          git stash
-          
-          # 2. Sync with GitHub (Pulls latest edits you made on the website)
-          git pull --rebase origin main
-          
-          # --------------------------------------------------
-          # ADDITION (SAFETY NET)
-          git stash pop || echo "No changes to apply"
-          # --------------------------------------------------
-          
-          # 3. Bring the Excel file back from stash
-          git stash pop || echo "No changes to apply"
-          
-          # 4. Final Save and Push
+          # 1. Add the file (even if it didn't exist before)
           git add price_tracker_final.xlsx
-          git commit -m "Price Update: $(date)" || echo "No changes to commit"
+          
+          # 2. Commit the change
+          git commit -m "Create/Update Price Tracker Excel: $(date)" || echo "No changes to commit"
+          
+          # 3. Push to main
           git push origin main
