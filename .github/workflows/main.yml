@@ -2,11 +2,11 @@ name: Amazon Price Tracker
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # Runs every 4 hours
-  workflow_dispatch:      # Allows manual trigger
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: write         # Gives the bot permission to save files
+  contents: write
 
 jobs:
   build:
@@ -24,23 +24,24 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 pandas openpyxl
+        run: pip install requests beautifulsoup4 pandas openpyxl pytz
 
       - name: Run tracker
         run: python tracker.py
 
-      - name: Sync and Push Changes
+      - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
 
-          # ALWAYS sync first (no untracked file conflict)
-          git fetch origin
-          git reset --hard origin/main
-
-          # Stage and commit generated Excel
+          # 1. Stage the file first
           git add price_tracker_final.xlsx
-          git commit -m "Price Update: $(date)" || echo "No changes to commit"
 
-          # Push safely
+          # 2. Commit the changes
+          git commit -m "Price Update: $(date)" || exit 0
+
+          # 3. Pull any remote changes to avoid conflicts (Rebase keeps history clean)
+          git pull --rebase origin main
+
+          # 4. Push safely
           git push origin main
