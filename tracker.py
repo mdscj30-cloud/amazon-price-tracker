@@ -79,7 +79,7 @@ FILENAME = "price_tracker_final.xlsx"
 IST = pytz.timezone("Asia/Kolkata")
 
 # ----------------------------
-# ENSURE EXCEL EXISTS (ADDED – SAFE)
+# ENSURE EXCEL EXISTS (UNCHANGED)
 # ----------------------------
 def ensure_excel_file():
     if not os.path.exists(FILENAME):
@@ -87,7 +87,7 @@ def ensure_excel_file():
         print("📄 Excel file created for first run", flush=True)
 
 # ----------------------------
-# AMAZON SCRAPER (LOG FIX ADDED)
+# AMAZON SCRAPER (UNCHANGED)
 # ----------------------------
 def get_amazon_data(url):
     for attempt in range(1, 4):
@@ -123,10 +123,7 @@ def get_amazon_data(url):
 
             price_val = int("".join(filter(str.isdigit, price.text.replace(",", ""))))
 
-            return {
-                "Product": title.text.strip(),
-                "Price": price_val
-            }
+            return {"Product": title.text.strip(), "Price": price_val}
 
         except Exception as e:
             print(f"❌ Error: {e}", flush=True)
@@ -134,12 +131,12 @@ def get_amazon_data(url):
     return None
 
 # ----------------------------
-# TRACKER (UNCHANGED LOGIC)
+# TRACKER (HOURLY DATA – FINAL)
 # ----------------------------
 def run_price_tracker():
     print("🚀 Tracker started", flush=True)
 
-    run_time = datetime.now(IST).strftime("%Y-%m-%d %H:%M")
+    run_time = datetime.now(IST).strftime("%Y-%m-%d %H:00")
 
     if os.path.exists(FILENAME):
         df = pd.read_excel(FILENAME)
@@ -149,7 +146,9 @@ def run_price_tracker():
     if "SKU Name" not in df.columns:
         df.insert(0, "SKU Name", "")
 
-    df.insert(1, run_time, "")
+    if run_time not in df.columns:
+        df.insert(1, run_time, "")
+
     random.shuffle(URLS)
 
     for i, url in enumerate(URLS, 1):
@@ -176,10 +175,10 @@ def run_price_tracker():
                 max(len(str(cell.value)) if cell.value else 0 for cell in col) + 5
             )
 
-    print("✅ Latest price inserted first. Older prices shifted right.", flush=True)
+    print("✅ Hourly data recorded (even if price unchanged).", flush=True)
 
 # ----------------------------
-# MAIN (CI SAFE – RUN ONCE)
+# MAIN (UNCHANGED)
 # ----------------------------
 if __name__ == "__main__":
     print("🏁 Script started", flush=True)
