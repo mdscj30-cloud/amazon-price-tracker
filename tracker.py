@@ -184,3 +184,4 @@ if __name__ == "__main__":
     print("🏁 Script started", flush=True)
     ensure_excel_file()
     run_price_tracker()
+ 
