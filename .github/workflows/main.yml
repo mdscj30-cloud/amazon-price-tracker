@@ -2,7 +2,7 @@ name: Amazon Price Tracker
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
+    - cron: '0 */4 * * *'   # Runs every 4 hours
   workflow_dispatch:
 
 permissions:
@@ -13,27 +13,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # 2️⃣ Setup Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
+      # 3️⃣ Install dependencies
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 pandas openpyxl pytz
+        run: |
+          pip install requests beautifulsoup4 pandas openpyxl pytz
 
-      - name: Run tracker
-        run: python tracker.py
-
-      - name: Commit and Push Changes
+      # 4️⃣ Pull latest changes FIRST (clean working tree)
+      - name: Sync with remote
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git pull --rebase origin main
+
+      # 5️⃣ Run tracker (this modifies Excel)
+      - name: Run price tracker
+        run: python tracker.py
+
+      # 6️⃣ Commit & push generated Excel
+      - name: Commit and Push Changes
+        run: |
           git add price_tracker_final.xlsx
-          git commit -m "IST price update $(date '+%Y-%m-%d %H:%M')" || exit 0
+          git commit -m "IST price update $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
           git push origin main
