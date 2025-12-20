@@ -11,7 +11,7 @@ import os
 import pytz  # For Indian timezone
 
 # ----------------------------
-# ENV DETECTION (ADDED)
+# ENV DETECTION (UNCHANGED)
 # ----------------------------
 IS_GITHUB = os.getenv("GITHUB_ACTIONS") == "true"
 
@@ -122,7 +122,6 @@ def get_amazon_data(url):
                 continue
 
             price_val = int("".join(filter(str.isdigit, price.text.replace(",", ""))))
-
             return {"Product": title.text.strip(), "Price": price_val}
 
         except Exception as e:
@@ -131,12 +130,13 @@ def get_amazon_data(url):
     return None
 
 # ----------------------------
-# TRACKER (HOURLY DATA – FINAL)
+# TRACKER (ONLY SAFE FIXES)
 # ----------------------------
 def run_price_tracker():
     print("🚀 Tracker started", flush=True)
 
-    run_time = datetime.now(IST).strftime("%Y-%m-%d %H:00")
+    # ✅ FIX: unique IST timestamp
+    run_time = datetime.now(IST).strftime("%Y-%m-%d %H:%M")
 
     if os.path.exists(FILENAME):
         df = pd.read_excel(FILENAME)
@@ -167,6 +167,9 @@ def run_price_tracker():
             row[run_time] = price
             df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
 
+    # ✅ SAFE: force git diff
+    df.attrs["last_run_ist"] = datetime.now(IST).isoformat()
+
     with pd.ExcelWriter(FILENAME, engine="openpyxl", mode="w") as writer:
         df.to_excel(writer, index=False)
         ws = writer.sheets["Sheet1"]
@@ -184,4 +187,3 @@ if __name__ == "__main__":
     print("🏁 Script started", flush=True)
     ensure_excel_file()
     run_price_tracker()
- 
