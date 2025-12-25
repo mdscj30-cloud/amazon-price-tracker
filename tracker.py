@@ -30,9 +30,11 @@ URLS = [
     "https://amzn.in/d/eQdsGNY",
     # New URLs added
     "https://amzn.in/d/9pq9YSq", 
+    "https://amzn.in/d/dtZzFoi",
     "https://amzn.in/d/9inaJOw", 
     "https://amzn.in/d/9XD40k7", 
-    "https://amzn.in/d/htTfjgp"
+    "https://amzn.in/d/htTfjgp",
+    "https://amzn.in/d/2ryRfHD",
 ]
 
 # ----------------------------
