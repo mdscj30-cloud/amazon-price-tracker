@@ -11,12 +11,12 @@ import os
 import pytz  # For Indian timezone
 
 # ----------------------------
-# ENV DETECTION (UNCHANGED)
+# ENV DETECTION
 # ----------------------------
 IS_GITHUB = os.getenv("GITHUB_ACTIONS") == "true"
 
 # ----------------------------
-# 1. PRODUCT LIST (UNCHANGED)
+# 1. PRODUCT LIST (UPDATED)
 # ----------------------------
 URLS = [
     "https://amzn.in/d/bqE35ja", "https://amzn.in/d/8DkcqwJ", "https://amzn.in/d/27dBhA1",
@@ -27,13 +27,19 @@ URLS = [
     "https://amzn.in/d/fCdbdzb", "https://amzn.in/d/fGRPZHm", "https://amzn.in/d/d8JD7Ef",
     "https://amzn.in/d/9Vmpx9L", "https://amzn.in/d/1yTk7TG", "https://amzn.in/d/amDxu6e",
     "https://amzn.in/d/8MCAq5Z", "https://amzn.in/d/8Xctx1i", "https://amzn.in/d/fETFYB9",
-    "https://amzn.in/d/eQdsGNY"
+    "https://amzn.in/d/eQdsGNY",
+    # New URLs added
+    "https://amzn.in/d/9pq9YSq", 
+    "https://amzn.in/d/9inaJOw", 
+    "https://amzn.in/d/9XD40k7", 
+    "https://amzn.in/d/htTfjgp"
 ]
 
 # ----------------------------
-# 2. USER AGENTS (UNCHANGED – 25)
+# 2. USER AGENTS (EXPANDED BY 30+)
 # ----------------------------
 USER_AGENTS = [
+    # --- ORIGINAL LIST ---
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/119.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; rv:121.0) Firefox/121.0",
@@ -44,27 +50,56 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0) Firefox/119.0",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) Chrome/117.0.0.0 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_7_10) Safari/605.1.15",
-
     "Mozilla/5.0 (Linux; Android 13) Chrome/120.0.6099.144 Mobile Safari/537.36",
     "Mozilla/5.0 (Linux; Android 12) Chrome/119.0.6045.193 Mobile Safari/537.36",
     "Mozilla/5.0 (Linux; Android 11) Chrome/118.0.5993.90 Mobile Safari/537.36",
     "Mozilla/5.0 (Linux; Android 10) Chrome/117.0.5938.132 Mobile Safari/537.36",
     "Mozilla/5.0 (Linux; Android 9) Chrome/116.0.5845.92 Mobile Safari/537.36",
-
     "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2) Safari/604.1",
     "Mozilla/5.0 (iPhone; CPU iPhone OS 16_7_3) Safari/604.1",
     "Mozilla/5.0 (iPad; CPU OS 17_1) Safari/604.1",
     "Mozilla/5.0 (iPad; CPU OS 16_6) Safari/604.1",
-
     "Mozilla/5.0 (Windows NT 6.1) Chrome/116.0.5845.140 Safari/537.36",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/117.0.5938.149 Safari/537.36",
     "Mozilla/5.0 (X11; Linux x86_64) Chrome/118.0.5993.88 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0) Firefox/118.0",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) Chrome/119.0.0.0 Safari/537.36"
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_5) Chrome/119.0.0.0 Safari/537.36",
+
+    # --- NEWLY ADDED AGENTS (Modern Chrome, Edge, Safari, Firefox) ---
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0",
+    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
+    "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 14; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPad; CPU OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 11.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 OPR/106.0.0.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Vivaldi/6.6.3271.45",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.2365.66",
+    "Mozilla/5.0 (Linux; Android 13; SM-A536B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36"
 ]
 
 # ----------------------------
-# REFERERS (UNCHANGED)
+# REFERERS
 # ----------------------------
 REFERERS = [
     "https://www.google.com/",
@@ -73,13 +108,13 @@ REFERERS = [
 ]
 
 # ----------------------------
-# CONFIG (UNCHANGED)
+# CONFIG
 # ----------------------------
 FILENAME = "price_tracker_final.xlsx"
 IST = pytz.timezone("Asia/Kolkata")
 
 # ----------------------------
-# ENSURE EXCEL EXISTS (UNCHANGED)
+# ENSURE EXCEL EXISTS
 # ----------------------------
 def ensure_excel_file():
     if not os.path.exists(FILENAME):
@@ -87,7 +122,7 @@ def ensure_excel_file():
         print("📄 Excel file created for first run", flush=True)
 
 # ----------------------------
-# AMAZON SCRAPER (UNCHANGED)
+# AMAZON SCRAPER
 # ----------------------------
 def get_amazon_data(url):
     for attempt in range(1, 4):
@@ -130,7 +165,7 @@ def get_amazon_data(url):
     return None
 
 # ----------------------------
-# TRACKER (ONLY SAFE FIXES)
+# TRACKER
 # ----------------------------
 def run_price_tracker():
     print("🚀 Tracker started", flush=True)
@@ -181,7 +216,7 @@ def run_price_tracker():
     print("✅ Hourly data recorded (even if price unchanged).", flush=True)
 
 # ----------------------------
-# MAIN (UNCHANGED)
+# MAIN
 # ----------------------------
 if __name__ == "__main__":
     print("🏁 Script started", flush=True)
