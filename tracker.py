@@ -99,6 +99,59 @@ USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.2365.66",
     "Mozilla/5.0 (Linux; Android 13; SM-A536B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36"
 ]
+# ----------------------------
+# 2A. AUTO-GENERATED USER AGENTS (ADDITIONAL ONLY)
+# ----------------------------
+
+EXTRA_USER_AGENTS = []
+
+# Desktop Chrome (Windows / Linux / Mac)
+for v in range(114, 134):
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{v}.0.0.0 Safari/537.36"
+    )
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{v}.0.0.0 Safari/537.36"
+    )
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (Macintosh; Intel Mac OS X 13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{v}.0.0.0 Safari/537.36"
+    )
+
+# Firefox Desktop
+for v in range(109, 129):
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:{v}.0) Gecko/20100101 Firefox/{v}.0"
+    )
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (X11; Linux x86_64; rv:{v}.0) Gecko/20100101 Firefox/{v}.0"
+    )
+
+# Edge / Opera / Vivaldi
+for v in range(118, 132):
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{v}.0.0.0 Safari/537.36 Edg/{v}.0.0.0"
+    )
+
+# Android Chrome
+for android in range(10, 15):
+    for chrome in range(118, 123):
+        EXTRA_USER_AGENTS.append(
+            f"Mozilla/5.0 (Linux; Android {android}; SM-G99{android}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome}.0.0.0 Mobile Safari/537.36"
+        )
+
+# iOS Safari
+for ios in ["17_2", "17_3", "17_4"]:
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (iPhone; CPU iPhone OS {ios} like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1"
+    )
+    EXTRA_USER_AGENTS.append(
+        f"Mozilla/5.0 (iPad; CPU OS {ios} like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile Safari/604.1"
+    )
+
+# ----------------------------
+# 2B. EXTEND EXISTING USER_AGENTS (NO REMOVAL)
+# ----------------------------
+USER_AGENTS.extend(EXTRA_USER_AGENTS)
 
 # ----------------------------
 # REFERERS
@@ -128,7 +181,7 @@ def ensure_excel_file():
 # ----------------------------
 def get_amazon_data(url):
     for attempt in range(1, 4):
-        print(f"🔍 Fetching ({attempt}/3): {url}", flush=True)
+        print(f" Fetching ({attempt}/3): {url}", flush=True)
 
         delay = random.uniform(3, 6) if IS_GITHUB else random.uniform(10, 18)
         time.sleep(delay)
